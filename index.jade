@@ -2,14 +2,19 @@ doctype html
 html(lang="en")
 	head
 		title= pageTitle
+		link(rel='stylesheet', href='/stylesheets/base.css')
 	body
   
 	- sudoku_array = [[5, 3, 0, 0, 7, 0, 0, 0, 0], [6, 0, 0, 1, 9, 5, 0, 0, 0], [0, 9, 8, 0, 0, 0, 0, 6, 0], [8, 0, 0, 0, 6, 0, 0, 0, 3], [4, 0, 0, 8, 0, 3, 0, 0, 1], [7, 0, 0, 0, 2, 0, 0, 0, 6], [0, 6, 0, 0, 0, 0, 2, 8, 0], [0, 0, 0, 4, 1, 9, 0, 0, 5], [0, 0, 0, 0, 8, 0, 0, 7, 9]]
 
 	table
 		thead
+			h1 My fun sudoku adventure!
 		tbody
 			for row in sudoku_array
 				tr
-				for number in row
-					td= number
+				for number, index in row
+					if number
+						td.cell(class=index)= number
+					else
+						td.cell(class=index)= ""

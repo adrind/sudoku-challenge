@@ -1,2 +1,4 @@
-adrind.github.io
-================
+
+td {
+	padding: 5px;
+}
