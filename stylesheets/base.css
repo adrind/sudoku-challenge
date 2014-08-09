@@ -1,6 +1,9 @@
-td {
-  padding: 5px;
+.cell {
+  padding: 10px;
   border: 1px solid #cccccc; }
+  .cell.selected {
+    border: 1px solid red; }
 
 table {
-  margin-left: 50px; }
+  margin-left: auto;
+  margin-right: auto; }
