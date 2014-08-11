@@ -1,15 +1,39 @@
-
-
-.cell 
-	padding: 10px
-	border: 1px solid #ccc
-	  
-	&.selected
-		border: 1px solid red
-  
 table
 	margin-left: auto
 	margin-right: auto
   
 input
-	-webkit-appearance: none
+	width: 50px
+	height: 50px
+	text-align: center
+	font-size: 20px
+	padding: 0
+	border: 1px #ccc solid
+	background: transparent
+		
+	&:focus
+		outline: none
+		border: 1px solid blue
+		box-shadow: 0 0 10px blue
+		
+	&.incorrect
+		color: red
+		
+	&::-webkit-input-placeholder
+		color: #000
+	&:-moz-placeholder
+		color: #000
+	&::-moz-placeholder
+		color: #000
+	&:-ms-input-placeholder
+		color: #000
+		
+.inactive
+	::-webkit-input-placeholder
+		color: #999
+	:-moz-placeholder
+		color: #999
+	::-moz-placeholder
+		color: #999
+	:-ms-input-placeholder
+		color: #999

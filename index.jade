@@ -19,10 +19,15 @@ html(lang="en")
 		thead
 			h1 My fun sudoku adventure!
 		tbody
-			for row in sudoku_array
+			for row, rowIndex in sudoku_array
 				tr
 				for number, index in row
 					if number
-						td.cell(class=index) number
+						td.cell.inactive(class=index)
+							input(type='text', id=index + 9*rowIndex, placeholder=number, maxlength=1)
 					else
-						td.cell(class=index) ""
+						td.cell(class=index)
+							input(type='text', id=index + 9*rowIndex, placeholder="", maxlength=1)
+							
+	button.submit Check score
+	button.check Check cell selected
