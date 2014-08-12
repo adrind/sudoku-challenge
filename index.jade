@@ -17,17 +17,18 @@ html(lang="en")
 
 	table.board
 		thead
-			h1 My fun sudoku adventure!
+			h1 Simply Sudoku
 		tbody
 			for row, rowIndex in sudoku_array
 				tr
 				for number, index in row
 					if number
-						td.cell.inactive(class=index)
+						td.inactive.cell
 							input(type='text', id=index + 9*rowIndex, placeholder=number, maxlength=1)
 					else
-						td.cell(class=index)
+						td.cell
 							input(type='text', id=index + 9*rowIndex, placeholder="", maxlength=1)
 							
-	button.submit Check score
-	button.check Check cell selected
+	button.submit.blue Check score
+	button.check.blue Check selected cell
+	button.restart Restart game

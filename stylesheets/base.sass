@@ -1,20 +1,31 @@
-table
-	margin-left: auto
-	margin-right: auto
-  
+$dark:	#444444
+$blue:	#2DB6CF
+$gold: #FFC033
+$white: #FFFFFF
+$grey: #CCCCCC
+
+h1
+	color: $dark
+
+.cell
+	&.incorrect
+		box-shadow: 0 0 10px red
+	&.correct
+		box-shadow: 0 0 10px green
+		
 input
 	width: 50px
 	height: 50px
 	text-align: center
 	font-size: 20px
 	padding: 0
-	border: 1px #ccc solid
+	border: 1px $grey solid
 	background: transparent
 		
 	&:focus
 		outline: none
-		border: 1px solid blue
-		box-shadow: 0 0 10px blue
+		border: 1px solid $blue
+		box-shadow: 0 0 10px $blue
 		
 	&.incorrect
 		color: red
@@ -37,3 +48,51 @@ input
 		color: #999
 	:-ms-input-placeholder
 		color: #999
+
+
+@import url(http://fonts.googleapis.com/css?family=Open+Sans:400,700)
+
+$arial: Arial,sans-serif
+$font-face: 'Open Sans', sans-serif
+
+button 
+	border: 0 none
+	border-radius: 2px 2px 2px 2px
+	color: #FFFFFF
+	cursor: pointer
+	display: inline-block
+	font-family: Arial,sans-serif
+	font-size: 12px
+	font-weight: bold
+	line-height: 20px
+	margin-bottom: 0
+	margin-right: 2px
+	margin-top: 10px
+	padding: 7px 10px
+	transition: all 0.3s ease 0s
+	-moz-transition: all 0.3s ease 0s
+	-webkit-transition: all 0.3s ease 0s
+	width: 16.75% /* auto */
+	text-align: center /* DELETE WHEN WIDTH AUTO */
+	
+	&:hover 
+		background: none repeat scroll 0 0 $gold
+		color: $white
+	
+	&.blue 
+		background: none repeat scroll 0 0 $dark
+		color: $white
+		&:hover 
+			background: none repeat scroll 0 0 $blue
+			color: $white
+
+	&.restart
+		display: block
+		width: 33.59%
+		background: none repeat scroll 0 0 $dark
+		color: $white
+		&:hover 
+			background: none repeat scroll 0 0 $gold
+			color: $white
+
+

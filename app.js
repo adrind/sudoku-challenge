@@ -4,8 +4,11 @@
 
 function SudokuCell ($cell) {
 	this.$cell = $cell;
-	this.id = $cell.attr('id');
+	this.input = this.$cell.find('input')[0];
+	this.id = this.input.id;
 	
+	
+	//Only sets the value if it's a number between 1-9
 	this.setValue = function() {
 		var newValue = Number(this._getValue());
 		
@@ -19,36 +22,54 @@ function SudokuCell ($cell) {
 	/* Select/Unselect cell methods */
 	
 	this.select = function() {
-		this.$cell.find('input')[0].focus();
+		this._clearHighlight();
+		this.input.focus();
 		return this;
 	}
 	
 	this.unSelect = function() {
-		this.$cell.find('input')[0].blur();
+		this.input.blur();
 	}
 	
 	/* Getter and setter methods */
 	
 	this.resetValue = function() {
 		if(!this.$cell.hasClass('inactive')) {
-			this.$cell.find('input')[0].placeholder = '';
+			this.input.placeholder = '';
 		}
 	}
 	
+	this.getId = function() {
+		return this.id;
+	}
+	
 	this._getValue = function() {
-		return this.$cell.find('input')[0].value;
+		return this.input.value;
+	}
+	
+	this._getPlaceholder = function() {
+		return this.input.placeholder;
 	}
 		
 	this._clearInput = function() {
-		this.$cell.find('input')[0].value = '';
+		this.input.value = '';
 	}
 	
 	this._setValue = function(value) {
-		this.$cell.find('input').attr('placeholder', value);
+		this.input.placeholder = value;
 	}
 	
-	this._getInput = function() {
-		return this.$cell.find('input')[0];
+	this.highlightCorrect = function() {
+		this.$cell.addClass('correct');
+	}
+	
+	this.highlightIncorrect = function() {
+		this.$cell.addClass('incorrect');
+	}
+	
+	this._clearHighlight = function() {
+		this.$cell.removeClass('correct');
+		this.$cell.removeClass('incorrect');
 	}
 }
 
@@ -58,7 +79,8 @@ function SudokuCell ($cell) {
 */
 
 function SudokuBoard () {
-  var _board = [],
+  var selectedCellId = '',
+  		_board = [],
   		_boardSolution= [[5,3,4,6,7,8,9,1,2],[6,7,2,1,9,5,3,4,8],[1,9,8,3,4,2,5,6,7]
 											[8,5,9,7,6,1,4,2,3],[4,2,6,8,5,3,7,9,1],[7,1,3,9,2,4,8,5,6], 
 											[9,6,1,5,3,7,2,8,4],[2,8,7,4,1,9,6,3,5],[3,4,5,2,8,6,1,7,9]];
@@ -84,6 +106,11 @@ function SudokuBoard () {
 			
 	  return _board[row][col];
 	}
+		
+	this._getAnswerForCell = function(id) {
+		var coords = this._getCoords(id);
+		return _boardSolution[coords.row][coords.col];
+	}
 	
 	this._getCoords = function(id) {
 		return {
@@ -100,14 +127,20 @@ function SudokuBoard () {
 		this._getCell(id).resetValue();
 	}
 	
+	this.unFocus = function() {
+		this.unSelectCell(this._selectedCellId);
+	}
+	
 	/* Select/Unselect cell methods */
 	
 	this.selectCell = function(id) {
 		this._getCell(id).select();
+		this._selectedCellId = id;
 	}
 	
 	this.unSelectCell = function(id) {
-		this._getCell.unSelect();
+		this._getCell(id).unSelect();
+		this._selectedCellId = '';
 	}
 	
 	/* Navigation methods */
@@ -131,15 +164,17 @@ function SudokuBoard () {
 	this._move = function(id, x, y) {
 		var oldCoords = this._getCoords(id),
 				newRow = oldCoords.row + y, 
-				newCol = oldCoords.col + x;
+				newCol = oldCoords.col + x,
+				newId;
 		
 		if(newRow > 8) { newRow = 0; }
 		else if(newRow < 0) { newRow = 8; }
 		if(newCol > 8) { newCol = 0; }
 		else if(newCol < 0) { newCol = 8; }
 		
-		this._getCell(id).unSelect();
-		_board[newRow][newCol].select();
+		this.unSelectCell(id);
+		var newId = _board[newRow][newCol].getId();
+		this.selectCell(newId);
 	}
 	
 	this.validate = function() {
@@ -148,6 +183,21 @@ function SudokuBoard () {
 				
 			})
 		})
+	}
+	
+	this.checkCellValue = function(value) {
+		var cellValue,
+				id = this._selectedCellId,
+				correctValue = this._getAnswerForCell(id);
+		
+		if (id) {
+			cellValue = this._getCell(id)._getPlaceholder();
+			if(cellValue == correctValue) {
+				this._getCell(id).highlightCorrect();
+			} else {
+				this._getCell(id).highlightIncorrect();
+			}
+		}
 	}
 }
 
@@ -176,12 +226,14 @@ function Sudoku () {
 	this._setEventListeners = function() {
 		$board.on('click', '.cell', _.bind(this._selectCell,this));
 		$('.submit').on('click', _.bind(this._validateBoard, this));
-		
+		$('.check').on('click', _.bind(this._validateCell, this));
+		this._setClickListeners();
 		this._setKeyPressListeners();
 	}
 	
 	this._selectCell = function(evt) {
 		var id = $(evt.target).attr('id');
+		evt.stopPropagation();
 		this.board.selectCell(id);		
 	}
 	
@@ -211,14 +263,43 @@ function Sudoku () {
 		},this));
 	}
 	
+	this._setClickListeners = function() {
+		$('body').on('click', _.bind(function(evt){
+			var targetNode = $(evt.target)[0].nodeName;
+		
+			switch (targetNode){
+				case "INPUT":
+					this._selectCell(evt);
+				case "BUTTON":
+					this._buttonPressed(evt);
+				default: 
+					this._boardUnfocused(evt);
+			}
+		},this));
+	}
+
+	this._boardUnfocused = function(evt) {
+		this.board.unFocus();
+	}
+	
+	this._buttonPressed = function(evt) {
+		var target = $(evt.target);
+		if (target.hasClass('check')) {
+			this._validateCell();
+		}
+	}
+	
 	this._keyPressed = function(evt) {
 		var id = $(evt.target).attr('id');
 		this.board.setValue(id);
 	}
 		
-		
-	this._validateBoard = function() {
+	this._validateBoard = function(evt) {
 		this.board.validate();
+	}
+	
+	this._validateCell = function() {		
+		this.board.checkCellValue();
 	}
 	
 }

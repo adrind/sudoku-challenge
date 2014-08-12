@@ -1,6 +1,11 @@
-table {
-  margin-left: auto;
-  margin-right: auto; }
+@import url(http://fonts.googleapis.com/css?family=Open+Sans:400,700);
+h1 {
+  color: #444444; }
+
+.cell.incorrect {
+  box-shadow: 0 0 10px red; }
+.cell.correct {
+  box-shadow: 0 0 10px green; }
 
 input {
   width: 50px;
@@ -12,8 +17,8 @@ input {
   background: transparent; }
   input:focus {
     outline: none;
-    border: 1px solid blue;
-    box-shadow: 0 0 10px blue; }
+    border: 1px solid #2db6cf;
+    box-shadow: 0 0 10px #2db6cf; }
   input.incorrect {
     color: red; }
   input::-webkit-input-placeholder {
@@ -32,3 +37,40 @@ input {
     color: #999999; }
   .inactive ::-moz-placeholder {
     color: #999999; }
+
+button {
+  border: 0 none;
+  border-radius: 2px 2px 2px 2px;
+  color: white;
+  cursor: pointer;
+  display: inline-block;
+  font-family: Arial, sans-serif;
+  font-size: 12px;
+  font-weight: bold;
+  line-height: 20px;
+  margin-bottom: 0;
+  margin-right: 2px;
+  margin-top: 10px;
+  padding: 7px 10px;
+  transition: all 0.3s ease 0s;
+  -moz-transition: all 0.3s ease 0s;
+  -webkit-transition: all 0.3s ease 0s;
+  width: 16.75%;
+  text-align: center; }
+  button:hover {
+    background: none repeat scroll 0 0 #ffc033;
+    color: white; }
+  button.blue {
+    background: none repeat scroll 0 0 #444444;
+    color: white; }
+    button.blue:hover {
+      background: none repeat scroll 0 0 #2db6cf;
+      color: white; }
+  button.restart {
+    display: block;
+    width: 33.59%;
+    background: none repeat scroll 0 0 #444444;
+    color: white; }
+    button.restart:hover {
+      background: none repeat scroll 0 0 #ffc033;
+      color: white; }
