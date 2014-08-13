@@ -29,6 +29,9 @@ html(lang="en")
 						td.cell
 							input(type='text', id=index + 9*rowIndex, placeholder="", maxlength=1)
 							
-	button.submit.blue Check score
-	button.check.blue Check selected cell
-	button.restart Restart game
+	.check-scores
+		button.submit Check score
+		button.check Check selected cell
+	.clear
+		button.restart Restart game
+		button.clear-highlighting Clear highlighting

@@ -3,9 +3,9 @@ h1 {
   color: #444444; }
 
 .cell.incorrect {
-  box-shadow: 0 0 10px red; }
+  box-shadow: 0 0 3px red; }
 .cell.correct {
-  box-shadow: 0 0 10px green; }
+  box-shadow: 0 0 3px green; }
 
 input {
   width: 50px;
@@ -60,17 +60,15 @@ button {
   button:hover {
     background: none repeat scroll 0 0 #ffc033;
     color: white; }
-  button.blue {
+  button.restart, button.check {
     background: none repeat scroll 0 0 #444444;
     color: white; }
-    button.blue:hover {
+    button.restart:hover, button.check:hover {
       background: none repeat scroll 0 0 #2db6cf;
       color: white; }
-  button.restart {
-    display: block;
-    width: 33.59%;
+  button.submit, button.clear-highlighting {
     background: none repeat scroll 0 0 #444444;
     color: white; }
-    button.restart:hover {
+    button.submit:hover, button.clear-highlighting:hover {
       background: none repeat scroll 0 0 #ffc033;
       color: white; }

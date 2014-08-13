@@ -6,12 +6,12 @@ $grey: #CCCCCC
 
 h1
 	color: $dark
-
+	
 .cell
 	&.incorrect
-		box-shadow: 0 0 10px red
+		box-shadow: 0 0 3px red
 	&.correct
-		box-shadow: 0 0 10px green
+		box-shadow: 0 0 3px green
 		
 input
 	width: 50px
@@ -48,7 +48,7 @@ input
 		color: #999
 	:-ms-input-placeholder
 		color: #999
-
+		
 
 @import url(http://fonts.googleapis.com/css?family=Open+Sans:400,700)
 
@@ -79,16 +79,16 @@ button
 		background: none repeat scroll 0 0 $gold
 		color: $white
 	
-	&.blue 
+	&.restart,
+	&.check 
 		background: none repeat scroll 0 0 $dark
 		color: $white
 		&:hover 
 			background: none repeat scroll 0 0 $blue
 			color: $white
 
-	&.restart
-		display: block
-		width: 33.59%
+	&.submit,
+	&.clear-highlighting
 		background: none repeat scroll 0 0 $dark
 		color: $white
 		&:hover 
