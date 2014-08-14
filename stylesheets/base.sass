@@ -1,18 +1,46 @@
+@import url(http://fonts.googleapis.com/css?family=Open+Sans:400,700)
+
+$font-face: 'Open Sans', sans-serif
+
 $dark:	#444444
 $blue:	#2DB6CF
 $gold: #FFC033
 $white: #FFFFFF
 $grey: #CCCCCC
+$dark-grey: #999999
+$black: #000000
+
+=button-background($colorOnHover)
+	background: none repeat scroll 0 0 $dark
+	color: $white
+	&:hover 
+		background: none repeat scroll 0 0 $colorOnHover
+		color: $white
+		
+=cell-box-shadow($color)
+	box-shadow: 0 0 10px $color
+	
+=placeholder-text-color($color)
+	&::-webkit-input-placeholder
+		color: $color
+	&:-moz-placeholder
+		color: $color
+	&::-moz-placeholder
+		color: $color
+	&:-ms-input-placeholder
+		color: $color
 
 h1
 	color: $dark
 	
 .cell
-	&.incorrect
-		box-shadow: 0 0 3px red
-	&.correct
-		box-shadow: 0 0 3px green
-		
+	&.darken
+		background-color: #eee
+
+@media screen and (max-width: 640px)
+	body
+		width: 540px
+ 
 input
 	width: 50px
 	height: 50px
@@ -28,32 +56,25 @@ input
 		box-shadow: 0 0 10px $blue
 		
 	&.incorrect
-		color: red
+		border: 1px red solid
 		
-	&::-webkit-input-placeholder
-		color: #000
-	&:-moz-placeholder
-		color: #000
-	&::-moz-placeholder
-		color: #000
-	&:-ms-input-placeholder
-		color: #000
+	&.correct
+		border: 1px green solid
+	
+	&.highlight
+		+cell-box-shadow($gold)
 		
+		&:focus
+			border: none
+			+cell-box-shadow($blue)
+			
+	+placeholder-text-color($black)
+			
 .inactive
-	::-webkit-input-placeholder
-		color: #999
-	:-moz-placeholder
-		color: #999
-	::-moz-placeholder
-		color: #999
-	:-ms-input-placeholder
-		color: #999
+	input
+		+placeholder-text-color($dark-grey)
 		
 
-@import url(http://fonts.googleapis.com/css?family=Open+Sans:400,700)
-
-$arial: Arial,sans-serif
-$font-face: 'Open Sans', sans-serif
 
 button 
 	border: 0 none
@@ -61,7 +82,7 @@ button
 	color: #FFFFFF
 	cursor: pointer
 	display: inline-block
-	font-family: Arial,sans-serif
+	font-family: $font-face
 	font-size: 12px
 	font-weight: bold
 	line-height: 20px
@@ -72,7 +93,7 @@ button
 	transition: all 0.3s ease 0s
 	-moz-transition: all 0.3s ease 0s
 	-webkit-transition: all 0.3s ease 0s
-	width: 16.75% /* auto */
+	width: 244px
 	text-align: center /* DELETE WHEN WIDTH AUTO */
 	
 	&:hover 
@@ -81,18 +102,9 @@ button
 	
 	&.restart,
 	&.check 
-		background: none repeat scroll 0 0 $dark
-		color: $white
-		&:hover 
-			background: none repeat scroll 0 0 $blue
-			color: $white
-
+		+button-background($blue)
+		 
 	&.submit,
 	&.clear-highlighting
-		background: none repeat scroll 0 0 $dark
-		color: $white
-		&:hover 
-			background: none repeat scroll 0 0 $gold
-			color: $white
-
+		+button-background($gold)
 

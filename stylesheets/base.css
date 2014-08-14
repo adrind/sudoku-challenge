@@ -2,11 +2,12 @@
 h1 {
   color: #444444; }
 
-.cell.incorrect {
-  box-shadow: 0 0 3px red; }
-.cell.correct {
-  box-shadow: 0 0 3px green; }
+.cell.darken {
+  background-color: #eeeeee; }
 
+@media screen and (max-width: 640px) {
+  body {
+    width: 540px; } }
 input {
   width: 50px;
   height: 50px;
@@ -20,7 +21,14 @@ input {
     border: 1px solid #2db6cf;
     box-shadow: 0 0 10px #2db6cf; }
   input.incorrect {
-    color: red; }
+    border: 1px red solid; }
+  input.correct {
+    border: 1px green solid; }
+  input.highlight {
+    box-shadow: 0 0 10px #ffc033; }
+    input.highlight:focus {
+      border: none;
+      box-shadow: 0 0 10px #2db6cf; }
   input::-webkit-input-placeholder {
     color: black; }
   input:-moz-placeholder {
@@ -30,13 +38,14 @@ input {
   input:-ms-input-placeholder {
     color: black; }
 
-.inactive {
-  -moz-placeholder-color: #999999;
-  -ms-input-placeholder-color: #999999; }
-  .inactive ::-webkit-input-placeholder {
-    color: #999999; }
-  .inactive ::-moz-placeholder {
-    color: #999999; }
+.inactive input::-webkit-input-placeholder {
+  color: #999999; }
+.inactive input:-moz-placeholder {
+  color: #999999; }
+.inactive input::-moz-placeholder {
+  color: #999999; }
+.inactive input:-ms-input-placeholder {
+  color: #999999; }
 
 button {
   border: 0 none;
@@ -44,7 +53,7 @@ button {
   color: white;
   cursor: pointer;
   display: inline-block;
-  font-family: Arial, sans-serif;
+  font-family: "Open Sans", sans-serif;
   font-size: 12px;
   font-weight: bold;
   line-height: 20px;
@@ -55,7 +64,7 @@ button {
   transition: all 0.3s ease 0s;
   -moz-transition: all 0.3s ease 0s;
   -webkit-transition: all 0.3s ease 0s;
-  width: 16.75%;
+  width: 244px;
   text-align: center; }
   button:hover {
     background: none repeat scroll 0 0 #ffc033;
