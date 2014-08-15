@@ -206,7 +206,9 @@ function SudokuBoard () {
 	}
 
 	this.unFocus = function() {
-		this.unSelectCell(this._selectedCellId);
+		if(this._selectedCellId) {
+			this.unSelectCell(this._selectedCellId);
+		}
 	}
 
 	/* Select/Unselect cell methods */

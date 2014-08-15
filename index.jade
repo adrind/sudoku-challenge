@@ -14,10 +14,19 @@ html(lang="en")
 	body
   
 	- sudoku_array = [[5, 3, 0, 0, 7, 0, 0, 0, 0], [6, 0, 0, 1, 9, 5, 0, 0, 0], [0, 9, 8, 0, 0, 0, 0, 6, 0], [8, 0, 0, 0, 6, 0, 0, 0, 3], [4, 0, 0, 8, 0, 3, 0, 0, 1], [7, 0, 0, 0, 2, 0, 0, 0, 6], [0, 6, 0, 0, 0, 0, 2, 8, 0], [0, 0, 0, 4, 1, 9, 0, 0, 5], [0, 0, 0, 0, 8, 0, 0, 7, 9]]
+	
+	- shortcut_array = {"Esc":"clear cell", "r": "highlight the row", "c" :"highlight the column", "b" : "highlight the box" }
 
 	table.board
 		thead
-			h1 Simply Sudoku
+			h1.title Sudoku, by Adrienne Dreyfus
+			.shortcut-section
+				h3.subtitle Keyboard shortcuts
+				ul.shortcuts
+					for shortcut, key in shortcut_array
+						li.shortcut
+							button.key=key
+							span.description=shortcut
 		tbody
 			for row, rowIndex in sudoku_array
 				tr

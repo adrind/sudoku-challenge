@@ -1,13 +1,32 @@
 @import url(http://fonts.googleapis.com/css?family=Open+Sans:400,700);
-h1 {
-  color: #444444; }
+/*Globals */
+/*Mixins */
+/*Styles */
+.title {
+  color: #444444;
+  font-family: "Open Sans", sans-serif; }
+
+.shortcut-section {
+  padding-left: 5px; }
+  .shortcut-section .shortcuts {
+    list-style-type: none;
+    padding-left: 0px;
+    width: 400px; }
+    .shortcut-section .shortcuts .shortcut {
+      display: inline-block;
+      width: 180px; }
+      .shortcut-section .shortcuts .shortcut .description {
+        margin-left: 5px;
+        font-family: "Open Sans", sans-serif;
+        font-size: 12px; }
+  .shortcut-section .subtitle {
+    color: #444444;
+    font-size: 14px;
+    font-family: "Open Sans", sans-serif; }
 
 .cell.darken {
   background-color: #eeeeee; }
 
-@media screen and (max-width: 640px) {
-  body {
-    width: 540px; } }
 input {
   width: 50px;
   height: 50px;
@@ -64,7 +83,7 @@ button {
   transition: all 0.3s ease 0s;
   -moz-transition: all 0.3s ease 0s;
   -webkit-transition: all 0.3s ease 0s;
-  width: 244px;
+  width: 250px;
   text-align: center; }
   button:hover {
     background: none repeat scroll 0 0 #ffc033;
@@ -81,3 +100,10 @@ button {
     button.submit:hover, button.clear-highlighting:hover {
       background: none repeat scroll 0 0 #ffc033;
       color: white; }
+  button.key {
+    background: none repeat scroll 0 0 #444444;
+    color: #999999;
+    width: 40px; }
+    button.key:hover {
+      background: none repeat scroll 0 0 #eeeeee;
+      color: #999999; }
