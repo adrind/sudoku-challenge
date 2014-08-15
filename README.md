@@ -1,6 +1,4 @@
-/*********************************/
-/* Sudoku, by Adrienne Dreyfus   */
-/*********************************/
+# Sudoku, by Adrienne Dreyfus 
 
 UI design: I only had time to implement a one board/one solution game. 
 I chose to focus on a great user experience, so a board generator 
@@ -14,11 +12,7 @@ solve.
 The buttons will provide hints to the user by checking the value of one cell,
 or the entire board. It also lets the user easily clear the board or highlights.
 
-
-/*****************************/
-/*           HTML            */
-/*****************************/
-
+###HTML
 
 The sudoku board is structured as a basic table with inputs in the cells. I 
 chose to take advantage of the placeholder attribute to temporarily store 
@@ -33,11 +27,7 @@ If I had more time I would have implemented a solution to support browsers
 without placeholders. This would have consisted of clearing the value before 
 user input on each focus (click), verifying, and then re-setting the value. 
 
-
-/*****************************/
-/*           CSS             */
-/*****************************/
-
+###CSS
 
 For the CSS I used SASS.
 
@@ -52,16 +42,12 @@ globals for colors so I could easily change them as I implemented the game.
 I would have made a more thorough mobile design if I had time, by taking 
 advantage of media queries and setting a new size/button layout. 
 
-
-/*****************************/
-/*        Javascript         */
-/*****************************/
-
+###Javascript
 
 I'm a big fan of a "facade" design pattern. By writing small methods that do one
 task, you decouple the structure and design of the front end from the Javascript
 logic behind it. Image if I had to support browsers that didn't support the 
-placeholder attribute; simply modifying the getValue and setValue methods in 
+placeholder attribute; simply modifying the `getValue` and `setValue` methods in
 SudokuCell would do the trick. Designs change all the time so structuring your
 Javascript in this fashion is the best way to quickly iterate on these changes
 without having to re-write a ton of code. It also helps a new person going into
@@ -82,13 +68,13 @@ array or a two dimensional array to store the SudokuCells. I chose 2D because
 the math to calculate the indices seemed more intuitive to me than a 1D array. 
 
 A couple of things I would have liked to do if I had more time to work on this:
-	1. Create a sudoku board generator. Ran out of time :(
-	2. Create an abstract "2D board game" class where I could define the move and 
+	* Create a sudoku board generator. Ran out of time :(
+	* Create an abstract "2D board game" class where I could define the move and 
 	   set/get cell value methods. Then SudokuBoard could have extended this class
 	   with some methods specific to Sudoku (such as board validation). The cool 
 	   thing about this approach is you can use the abstracted 2D board game class 
 	   to easily create other similar games (like Tic Tac Toe). 
-	3. I would have also like to use some dependency management so my JS wasn't in
+	* I would have also like to use some dependency management so my JS wasn't in
 		 one huge file. Libraries like require.js make this pretty easy to manage. 
 		 
 Overall this was a fun project that I think everyone should do at one point, 
