@@ -7,8 +7,7 @@
 
 function SudokuCell ($cell) {
 	this._$cell = $cell; //jQuery DOM reference
-	this._input = this._$cell.find('input')[0]; //DOM reference
-	this._id = this._input.id; //id of the cell in the board (0-88)
+	this._$input = this._$cell.find('input'); //DOM reference
 
  /**
   * Validates the user input & sets the value of the cell if it's valid input
@@ -29,19 +28,23 @@ function SudokuCell ($cell) {
   /* Sets focus on this cell */
 	this.select = function() {
 		this.clearSolutionHighlighting();
-		this._input.focus();
+		this._$input.focus();
 		return this;
 	}
 
   /* Removes focus from this cell */
 	this.unSelect = function() {
-		this._input.blur();
+		this._$input.blur();
 	}
 
 	/* Clears the value unless it's an initial starting cell */
 	this.resetValue = function() {
 		if(!this._$cell.hasClass('inactive')) {
-			this._input.placeholder = '';
+			this._$input.attr('placeholder', '');
+		}
+		
+		if(this._$input.val()) {
+			this._$input.val('');
 		}
 	}
 
@@ -50,15 +53,20 @@ function SudokuCell ($cell) {
   * {@return} Number cell id
 	*/
 	this.getId = function() {
-		return this._id;
+		return this._$input.attr('id');	
 	}
 
  /**
-  * Adds a highlight when the current value is not correct
+  * Gets the value the user has currently input 
   * @return {String} the current user input
 	*/
 	this._getUserInput = function() {
-		return this._input.value;
+		return this._$input.val();
+	}
+	
+  /* Clears any input the user has entered */
+	this._clearUserInput = function() {
+		this._$input.val('');
 	}
 
  /**
@@ -66,12 +74,7 @@ function SudokuCell ($cell) {
   * @return {String} the saved value
 	*/
 	this.getValue = function() {
-		return this._input.placeholder;
-	}
-
-  /* Clears any input the user has entered */
-	this._clearUserInput = function() {
-		this._input.value = '';
+		return this._$input.attr('placeholder');
 	}
 
  /**
@@ -79,34 +82,33 @@ function SudokuCell ($cell) {
   * @param {Number} the new value of the cell
 	*/
 	this._setValue = function(value) {
-		this._input.placeholder = value;
+		this._$input.attr('placeholder', value);
 	}
 
-  /* Adds an highlight when the current value is correct */
+  /* Adds a green highlight when the current value is correct */
 	this.highlightCorrect = function() {
-		this._$cell.find('input').addClass('correct');
+		this._$input.addClass('correct');
 	}
 
-  /* Adds an highlight when the current value is not correct */
+  /* Adds a red highlight when the current value is not correct */
 	this.highlightIncorrect = function() {
-		this._$cell.find('input').addClass('incorrect');
+		this._$input.addClass('incorrect');
 	}
 
   /* Removes all solution related highlights from the cell */
 	this.clearSolutionHighlighting = function() {
-		this._$cell.find('input').removeClass('correct');
-		this._$cell.find('input').removeClass('incorrect');
+		this._$input.removeClass('correct incorrect');
 	}
 	
-	/* Adds a general highlight to the cell */
+	/* Adds a general yellow highlight to the cell */
 	this.highlight = function() {
-		this._$cell.find('input').addClass('highlight');
+		this._$input.addClass('highlight');
 		this._clearUserInput();
 	}
 	
-	/* Removes a general highlight from the cell */
+	/* Removes the general highlight from the cell */
 	this.clearHighlight = function() {
-		this._$cell.find('input').removeClass('highlight');
+		this._$input.removeClass('highlight');
 	}
 
 	/* Darkens the background of a cell */
@@ -225,7 +227,11 @@ function SudokuBoard () {
 		}
 	}
 
-	/* Setting values on a cell */
+	/** 
+	 * Sets the value on a cell 
+	 * @param {Number} the id of a cell
+	 * @param {String} the value the user input
+	 */
 	this.setValue = function(id, value) {
 		this._getCell(id).setValue(value);
 	}
@@ -269,6 +275,10 @@ function SudokuBoard () {
 		this._highlightCells(box);
 	}
 	
+	/** 
+	 * Highlights a given subset of cells 
+	 * @param {Array} the cells to highlight
+	 */
 	this._highlightCells =function(cells) {
 	
 		//Unhighlight all cells
@@ -493,7 +503,8 @@ function Sudoku () {
 	}
 
 	/** 
-	 * Unfocuses the entire board
+	 * Event handler when a button is pressed
+	 * Switch on the classname
 	 * @param {Event} button event 
 	 */
 	this._buttonPressed = function(evt) {
