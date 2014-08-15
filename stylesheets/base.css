@@ -35,6 +35,14 @@ input {
   padding: 0;
   border: 1px #cccccc solid;
   background: transparent; }
+  input::-webkit-input-placeholder {
+    color: black; }
+  input:-moz-placeholder {
+    color: black; }
+  input::-moz-placeholder {
+    color: black; }
+  input:-ms-input-placeholder {
+    color: black; }
   input:focus {
     outline: none;
     border: 1px solid #2db6cf;
@@ -48,14 +56,6 @@ input {
     input.highlight:focus {
       border: none;
       box-shadow: 0 0 10px #2db6cf; }
-  input::-webkit-input-placeholder {
-    color: black; }
-  input:-moz-placeholder {
-    color: black; }
-  input::-moz-placeholder {
-    color: black; }
-  input:-ms-input-placeholder {
-    color: black; }
 
 .inactive input::-webkit-input-placeholder {
   color: #999999; }

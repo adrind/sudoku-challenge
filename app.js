@@ -1,115 +1,135 @@
 /**
-* A single sudoku cell object
+* Methods to control the state of a single sudoku cell
+*
+* @class SudokuCell
+* @constructor
 */
 
 function SudokuCell ($cell) {
-	this.$cell = $cell;
-	this.input = this.$cell.find('input')[0];
-	this.id = this.input.id;
-	
- /*
-  * Save the current user input as value if it's a number between 1-9
-	*/
-	this.setValue = function() {
-		var newValue = Number(this._getUserInput());
+	this._$cell = $cell; //jQuery DOM reference
+	this._input = this._$cell.find('input')[0]; //DOM reference
+	this._id = this._input.id; //id of the cell in the board (0-88)
 
-		if(!this.$cell.hasClass('inactive') && newValue) {
-			this._setValue(newValue);
+ /**
+  * Validates the user input & sets the value of the cell if it's valid input
+  * @param {String} the current user input
+	*/
+	this.setValue = function(value) {
+		//input only accepts one character we can reject anything that is not a number
+		var numericValue = Number(value);
+
+		if(!this._$cell.hasClass('inactive') && numericValue) {
+			this._setValue(numericValue);
 		}
 
 		this._clearUserInput();
 	}
 
-  /*****************************/
-  /* Select/Unselect methods   */
-  /*****************************/
 
- /* Focus on this cell */
+  /* Sets focus on this cell */
 	this.select = function() {
-		this.clearHighlighting();
-		this.input.focus();
+		this.clearSolutionHighlighting();
+		this._input.focus();
 		return this;
 	}
 
- /* Remove focus from this cell */
+  /* Removes focus from this cell */
 	this.unSelect = function() {
-		this.input.blur();
+		this._input.blur();
 	}
 
-	/* Clears the value unless it's a starting cell */
+	/* Clears the value unless it's an initial starting cell */
 	this.resetValue = function() {
-		if(!this.$cell.hasClass('inactive')) {
-			this.input.placeholder = '';
+		if(!this._$cell.hasClass('inactive')) {
+			this._input.placeholder = '';
 		}
 	}
 
-	/* Get id of the cell in the grid */
+ /**
+  * Returns the id of the cell
+  * {@return} Number cell id
+	*/
 	this.getId = function() {
-		return this.id;
+		return this._id;
 	}
 
- /* Add an highlight when the current value is not correct */
+ /**
+  * Adds a highlight when the current value is not correct
+  * @return {String} the current user input
+	*/
 	this._getUserInput = function() {
-		return this.input.value;
+		return this._input.value;
 	}
 
- /* Clears any input the user has entered */
-	this._getPlaceholder = function() {
-		return this.input.placeholder;
+ /**
+  * Gets the current saved value of the cell
+  * @return {String} the saved value
+	*/
+	this.getValue = function() {
+		return this._input.placeholder;
 	}
 
- /* Clears any input the user has entered */
+  /* Clears any input the user has entered */
 	this._clearUserInput = function() {
-		this.input.value = '';
+		this._input.value = '';
 	}
 
- /*
+ /**
   * Sets the value of cell
-  * {@param} Number the new value of the cell
+  * @param {Number} the new value of the cell
 	*/
 	this._setValue = function(value) {
-		this.input.placeholder = value;
+		this._input.placeholder = value;
 	}
 
- /* Add an highlight when the current value is correct */
+  /* Adds an highlight when the current value is correct */
 	this.highlightCorrect = function() {
-		this.$cell.find('input').addClass('correct');
+		this._$cell.find('input').addClass('correct');
 	}
 
- /* Add an highlight when the current value is not correct */
+  /* Adds an highlight when the current value is not correct */
 	this.highlightIncorrect = function() {
-		this.$cell.find('input').addClass('incorrect');
+		this._$cell.find('input').addClass('incorrect');
 	}
 
- /* Remove all highlights from the cell */
-	this.clearHighlighting = function() {
-		this.$cell.find('input').removeClass('correct');
-		this.$cell.find('input').removeClass('incorrect');
+  /* Removes all solution related highlights from the cell */
+	this.clearSolutionHighlighting = function() {
+		this._$cell.find('input').removeClass('correct');
+		this._$cell.find('input').removeClass('incorrect');
 	}
 	
+	/* Adds a general highlight to the cell */
 	this.highlight = function() {
-		this.$cell.find('input').addClass('highlight');
+		this._$cell.find('input').addClass('highlight');
 		this._clearUserInput();
 	}
 	
+	/* Removes a general highlight from the cell */
 	this.clearHighlight = function() {
-		this.$cell.find('input').removeClass('highlight');
+		this._$cell.find('input').removeClass('highlight');
+	}
+
+	/* Darkens the background of a cell */
+	this.darken = function() {
+		this._$cell.addClass('darken');
 	}
 }
 
 /**
-* A sudoku board
-* Stores the current state of all the game cells
+* Methods to control the state of a sudoku board
+*
+* @class SudokuBoard
+* @constructor
 */
 
 function SudokuBoard () {
-  var selectedCellId = '',
-  		_board = [],
+  var _selectedCellId = '', //current selected/focused cell
+  		_board = [], //board of user inputted values
   		_boardSolution= [[5,3,4,6,7,8,9,1,2],[6,7,2,1,9,5,3,4,8],[1,9,8,3,4,2,5,6,7],
 											[8,5,9,7,6,1,4,2,3],[4,2,6,8,5,3,7,9,1],[7,1,3,9,2,4,8,5,6], 
 											[9,6,1,5,3,7,2,8,4],[2,8,7,4,1,9,6,3,5],[3,4,5,2,8,6,1,7,9]];
 
- /* Creates a new board of SudokuCells */
+  /* Creates a new board of SudokuCells */
 	this.initBoard = function() {
 		var cells = $('.board').find('.cell');
 			_.each(cells, _.bind(function(cell, index){
@@ -121,11 +141,11 @@ function SudokuBoard () {
 				}
 
 				_board[rowIndex].push(sudokuCell);
-				this._initializeBackground(cell, rowIndex, _board[rowIndex].indexOf(sudokuCell));
+				this._initializeBackground(sudokuCell);
 			},this));
 	}
 
-	/* Getter and setter methods */
+	/* Fetch cell(s) methods */
 	this._getCell = function(id) {
 		var row = Math.floor(id/9),
 			col = id%9;
@@ -141,11 +161,13 @@ function SudokuBoard () {
 	this._getCol = function(id) {
 		var col = id%9,
 				cells = [];
+				
+		//cycle through the board and return the cells in the same column
 		_.each(_board, function(cellRow) { 
-			return _.each(cellRow, function(cell,colIndex) {
-				 if(colIndex === col){
-				 	cells.push(cell);
-				 };
+			_.each(cellRow, function(cell,colIndex) {
+				if(colIndex === col){
+				 cells.push(cell);
+				};
 			});
 		 });
 		 return cells;
@@ -156,29 +178,33 @@ function SudokuBoard () {
 				section = Math.floor(coords.col/3) + Math.floor(coords.row/3) * 3,
 				cells = [];
 		
+		//cycle through the board and return the cells in the same box section
 		 _.each(_board, function(cellRow, rowIndex){
-					_.each(cellRow, function(cell, colIndex){
-						var cellSection = Math.floor(colIndex/3) + Math.floor(rowIndex/3) * 3;
-						if(section === cellSection) {
-							cells.push(cell);
-						} 
-					});
-				}); 
+		 	_.each(cellRow, function(cell, colIndex){
+				var cellSection = Math.floor(colIndex/3) + Math.floor(rowIndex/3) * 3;
+				if(section === cellSection) {
+					cells.push(cell);
+				} 
+			});
+		}); 
 		return cells;
 	}
 	
-	/* 
-	 * Returns the expected solution value for a cell
-	 * @param {Number} id of cell to check
+	/** 
+	 * Initializes the background of a cell
+	 * @param {Object} cell to initialize
 	 */
-	this._initializeBackground = function(cell, row, col) {
-		if( (Math.floor(row/3) + Math.floor(col/3))%2) {
-			$(cell).addClass('darken');
+	this._initializeBackground = function(cell) {
+		var coords = this._getCoords(cell);
+		
+		//Only darken cells of every other section
+		if( (Math.floor(coords.row/3) + Math.floor(coords.col/3))%2) {
+			cell.darken();
 		}
 	}
 
-	/* 
-	 * Returns the expected solution value for a cell
+	/** 
+	 * Returns the expected solution value for a single cell
 	 * @param {Number} id of cell to check
 	 */
 	this._getAnswerForCell = function(id) {
@@ -186,29 +212,26 @@ function SudokuBoard () {
 		return _boardSolution[coords.row][coords.col];
 	}
 
-	/* 
+	/** 
 	 * Returns the coordinates of the cell in the board 
-	 * @param {Number} id of cell to check
+	 * @param {Number|Object} either the id of a cell or a cell to look up
 	 */
-	this._getCoords = function(id) {
+	this._getCoords = function(param) {
+		var id = typeof param === 'object' ? param.getId() : param;
+				
 		return {
 			row : Math.floor(id/9),
 			col : id%9
 		}
 	}
 
-	this.setValue = function(id) {
-		this._getCell(id).setValue();
+	/* Setting values on a cell */
+	this.setValue = function(id, value) {
+		this._getCell(id).setValue(value);
 	}
 
 	this.resetValue = function(id) {
 		this._getCell(id).resetValue();
-	}
-
-	this.unFocus = function() {
-		if(this._selectedCellId) {
-			this.unSelectCell(this._selectedCellId);
-		}
 	}
 
 	/* Select/Unselect cell methods */
@@ -222,6 +245,14 @@ function SudokuBoard () {
 		this._getCell(id).unSelect();
 		this._selectedCellId = '';
 	}
+	
+	this.unFocus = function() {
+		if(this._selectedCellId) {
+			this.unSelectCell(this._selectedCellId);
+		}
+	}
+	
+	/* Hightlight cell methods */
 	
 	this.highlightRow = function(id) {
 		var row = this._getRow(id);
@@ -237,15 +268,17 @@ function SudokuBoard () {
 		var box = this._getBox(id);
 		this._highlightCells(box);
 	}
-
 	
 	this._highlightCells =function(cells) {
+	
+		//Unhighlight all cells
 		_.each(_board, function(cellRow){
 			_.each(cellRow, function(cell){
 				cell.clearHighlight();
 			});
 		});
 		
+		//Highlight newly selected cells
 		_.each(cells, function(cell){
 			cell.highlight();
 		});
@@ -269,11 +302,11 @@ function SudokuBoard () {
 		this._move(id, 0, 1);
 	}
 
-	/*
+	/**
 	 * Moves the focus on the board to a different cell
-	 * {@param} Number id of the starting cell
-	 * {@param} Number direction to move horizontally [-1,0,1]
-	 * {@param} Number direction to move vertically [-1,0,1]
+	 * @param {Number} id of the starting cell
+	 * @param {Number} direction to move horizontally [-1,0,1]
+	 * @param {Number} direction to move vertically [-1,0,1]
 	 */
 	this._move = function(id, x, y) {
 		var oldCoords = this._getCoords(id),
@@ -281,7 +314,7 @@ function SudokuBoard () {
 				newCol = oldCoords.col + x,
 				newId;
 
-		//Handle cases when you move past the row/col end
+		//Handle cases when you move past the end of a row/col
 		if(newRow > 8) { newRow = 0; }
 		else if(newRow < 0) { newRow = 8; }
 		if(newCol > 8) { newCol = 0; }
@@ -296,25 +329,30 @@ function SudokuBoard () {
 	this.restart = function() {
 		_.each(_board, function(row){
 			_.each(row, function(cell){
-				cell.clearHighlighting();
+				cell.clearSolutionHighlighting();
 				cell.resetValue();
 			});
 		});
 	}
 	
+	/* Clears all highlighting from the board */
 	this.clearHighlighting = function() {
 		_.each(_board, function(row){
 			_.each(row, function(cell){
-				cell.clearHighlighting();
+				cell.clearSolutionHighlighting();
 				cell.clearHighlight();
 			});
 		});
 	}
 	
 
-	/* Validates the entire board */
+	/**
+	 * Validates the entire board and highlights it accordingly 
+	 * @return {Array} an array of booleans that signifies whether a cell is correct
+	 */
 	this.validateBoard = function() {
 		this.clearHighlighting();
+		
 		return _.map(_board, _.bind(function(row){
 			var truthRow = _.map(row, _.bind(function(cell){
 				return this.validateCell(cell.getId());
@@ -323,9 +361,9 @@ function SudokuBoard () {
 		},this));
 	}
 
-	/*
+	/**
 	 * Validates a single cell and highlights it accordingly
-	 * @param {Number} id of the cell to validate
+	 * @param  {Number} id of the cell to validate
 	 * @return {Boolean} whether the cell is correct
 	 */
 	this.validateCell = function(id) {
@@ -334,7 +372,7 @@ function SudokuBoard () {
 				correctValue = this._getAnswerForCell(id);
 
 		if (id) {
-			cellValue = this._getCell(id)._getPlaceholder();
+			cellValue = this._getCell(id).getValue();
 			if(cellValue == correctValue) {
 				this._getCell(id).highlightCorrect();
 				return true;
@@ -347,12 +385,16 @@ function SudokuBoard () {
 }
 
 /**
-* A sudoku game
-* Uses the sudoku board to manipulate the view
+* Methods to control the state of a sudoku game
+* Focuses on handling events made on the board
+*
+* @class Sudoku
+* @constructor
 */
 
 function Sudoku () {
 
+	//Globals
 	var KEY_DOWN = 40,
 			KEY_UP = 38,
 			KEY_RIGHT = 39,
@@ -361,14 +403,19 @@ function Sudoku () {
 			HIGHLIGHT_ROW = 82,
 			HIGHLIGHT_COL = 67,
 			HIGHLIGHT_BOX = 66,
-			$board = $('.board'),
-			board;
+			CHECK_CLASS = 'check',
+			RESTART_CLASS = 'restart',
+			SUBMIT_CLASS = 'submit',
+			CLEAR_HIGHLIGHTING_CLASS = 'clear-highlighting',
+			INPUT = 'INPUT',
+			BUTTON = 'BUTTON',
+			_board;
 
-	/* Init the game */
+	/* Inits the game */
 	this.init = function() {
 
-		this.board = new SudokuBoard ();
-		this.board.initBoard();
+		this._board = new SudokuBoard();
+		this._board.initBoard();
 		this._setClickListeners();
 		this._setKeyPressListeners();
 	}
@@ -380,28 +427,28 @@ function Sudoku () {
 
 			switch (evt.keyCode){
 				case KEY_UP:
-					this.board.moveUp(id);
+					this._board.moveUp(id);
 					return false;
 				case KEY_DOWN:
-					this.board.moveDown(id);
+					this._board.moveDown(id);
 					return false;
 				case KEY_LEFT:
-					this.board.moveLeft(id);
+					this._board.moveLeft(id);
 					return false;
 				case KEY_RIGHT:
-					this.board.moveRight(id);
+					this._board.moveRight(id);
 					return false;
 				case ESC:
-					this.board.resetValue(id);
+					this._board.resetValue(id);
 					return false;
 				case HIGHLIGHT_ROW:
-					this.board.highlightRow(id);
+					this._board.highlightRow(id);
 					return false;
 				case HIGHLIGHT_COL:
-					this.board.highlightCol(id);
+					this._board.highlightCol(id);
 					return false;
 				case HIGHLIGHT_BOX: 
-					this.board.highlightBox(id);
+					this._board.highlightBox(id);
 					return false;
 				default:
 					this._keyPressed(evt);
@@ -416,10 +463,10 @@ function Sudoku () {
 			var targetNode = $(evt.target)[0].nodeName;
 
 			switch (targetNode){
-				case "INPUT":
+				case INPUT:
 					this._selectCell(evt);
 					return false;
-				case "BUTTON":
+				case BUTTON:
 					this._buttonPressed(evt);
 					return false;
 				default:
@@ -428,24 +475,24 @@ function Sudoku () {
 		},this));
 	}
 	
-	/* 
-	 * Select a cell on click
+	/** 
+	 * Selects a cell on click
 	 * @param {Event} click event 
 	 */
 	this._selectCell = function(evt) {
 		var id = $(evt.target).attr('id');
-		this.board.selectCell(id);
+		this._board.selectCell(id);
 	}
 
-	/* 
-	 * Unfocuses the entire board
+	/** 
+	 * Unfocuses the board when a click is outside the board
 	 * @param {Event} click event 
 	 */
 	this._boardUnfocused = function(evt) {
-		this.board.unFocus();
+		this._board.unFocus();
 	}
 
-	/* 
+	/** 
 	 * Unfocuses the entire board
 	 * @param {Event} button event 
 	 */
@@ -453,30 +500,32 @@ function Sudoku () {
 		var buttonClass = $(evt.target).attr('class');
 		
 		switch(buttonClass) {
-			case 'check':
-				this.board.validateCell();
+			case CHECK_CLASS:
+				this._board.validateCell();
 				return false;
-			case 'restart':
-				this.board.restart();
+			case RESTART_CLASS:
+				this._board.restart();
 				return false;
-			case 'submit': 
-				this.board.validateBoard();
+			case SUBMIT_CLASS: 
+				this._board.validateBoard();
 				return false;
-			case 'clear-highlighting':
-				this.board.clearHighlighting();
+			case CLEAR_HIGHLIGHTING_CLASS:
+				this._board.clearHighlighting();
 				return false;
 			default:
 				return false;
 		}
 	}
 
-	/* 
-	 * Handle the user input  
+	/** 
+	 * Handles the user input  
 	 * @param {Event} keyUp event 
 	 */
 	this._keyPressed = function(evt) {
-		var id = $(evt.target).attr('id');
-		this.board.setValue(id);
+		var $target = $(evt.target), //cache the reference
+				id = $target.attr('id'),
+				value = $target.val();
+		this._board.setValue(id, value);
 	}
 
 }

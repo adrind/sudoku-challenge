@@ -16,16 +16,19 @@ $black: #000000
 
 /** Mixins **/
 
+//Sets a custom background/font color change
 =button-background($colorOnHover, $font-color:$white)
 	background: none repeat scroll 0 0 $dark
 	color: $font-color
 	&:hover 
 		background: none repeat scroll 0 0 $colorOnHover
 		color: $font-color
-		
+
+//Sets a box shadow (used for highlights)		
 =cell-box-shadow($color)
 	box-shadow: 0 0 10px $color
 	
+//Sets the placeholder text color
 =placeholder-text-color($color)
 	&::-webkit-input-placeholder
 		color: $color
@@ -38,10 +41,12 @@ $black: #000000
 
 /** Styles **/
 
+//Main header
 .title
 	color: $dark
 	font-family: $font-face
 
+//Keyboard shortcuts section
 .shortcut-section
 	padding-left: 5px
 	.shortcuts
@@ -60,7 +65,8 @@ $black: #000000
 		color: $dark
 		font-size: 14px
 		font-family: $font-face
-	
+
+//Individual cells
 .cell
 	&.darken
 		background-color: #eee
@@ -74,6 +80,9 @@ input
 	border: 1px $grey solid
 	background: transparent
 		
+	+placeholder-text-color($black)
+	
+	//Cell highlight styles
 	&:focus
 		outline: none
 		border: 1px solid $blue
@@ -92,12 +101,12 @@ input
 			border: none
 			+cell-box-shadow($blue)
 			
-	+placeholder-text-color($black)
-			
+//Styles for the default cells 
 .inactive
 	input
 		+placeholder-text-color($dark-grey)
-		
+
+//Global button styles
 button 
 	border: 0 none
 	border-radius: 2px 2px 2px 2px
@@ -116,8 +125,9 @@ button
 	-moz-transition: all 0.3s ease 0s
 	-webkit-transition: all 0.3s ease 0s
 	width: 250px
-	text-align: center /* DELETE WHEN WIDTH AUTO */
+	text-align: center
 	
+	//Button background styles on hover
 	&:hover 
 		background: none repeat scroll 0 0 $gold
 		color: $white
