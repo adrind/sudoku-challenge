@@ -1,46 +1,46 @@
 doctype html
 html(lang="en")
-	head
-		title= pageTitle
-		link(rel='stylesheet', href='stylesheets/base.css')
-		script(src="libraries/jquery-1.11.1.js")
-		script(src="libraries/underscore_1.6.0.js")
-		script(src="app.js")
-		script(type="text/javascript").
-			$(document).ready(function(){
-				var game = new Sudoku();
-				game.init();
-			});
-	body
-  
-	- sudoku_array = [[5, 3, 0, 0, 7, 0, 0, 0, 0], [6, 0, 0, 1, 9, 5, 0, 0, 0], [0, 9, 8, 0, 0, 0, 0, 6, 0], [8, 0, 0, 0, 6, 0, 0, 0, 3], [4, 0, 0, 8, 0, 3, 0, 0, 1], [7, 0, 0, 0, 2, 0, 0, 0, 6], [0, 6, 0, 0, 0, 0, 2, 8, 0], [0, 0, 0, 4, 1, 9, 0, 0, 5], [0, 0, 0, 0, 8, 0, 0, 7, 9]]
-	
-	- shortcut_list = {"Esc":"clear cell", "r": "highlight the row", "c" :"highlight the column", "b" : "highlight the box" }
+  head
+    title= pageTitle
+    link(rel='stylesheet', href='stylesheets/base.css')
+    script(src="libraries/jquery-1.11.1.js")
+    script(src="libraries/underscore_1.6.0.js")
+    script(src="app.js")
+    script(type="text/javascript").
+      $(document).ready(function(){
+        var game = new Sudoku();
+        game.init();
+      });
+  body
 
-	table.board
-		thead
-			h1.title Sudoku, by Adrienne Dreyfus
-			.shortcut-section
-				h3.subtitle Keyboard shortcuts
-				ul.shortcuts
-					for shortcut, key in shortcut_list
-						li.shortcut
-							button.key=key
-							span.description=shortcut
-		tbody
-			for row, rowIndex in sudoku_array
-				tr
-				for number, index in row
-					if number
-						td.inactive.cell
-							input(type='text', id=index + 9*rowIndex, placeholder=number, maxlength=1)
-					else
-						td.cell
-							input(type='text', id=index + 9*rowIndex, placeholder="", maxlength=1)
-							
-	.check-scores
-		button.submit Check score
-		button.check Check selected cell
-	.clear
-		button.restart Restart game
-		button.clear-highlighting Clear highlighting
+  - sudoku_array = [[5, 3, 0, 0, 7, 0, 0, 0, 0], [6, 0, 0, 1, 9, 5, 0, 0, 0], [0, 9, 8, 0, 0, 0, 0, 6, 0], [8, 0, 0, 0, 6, 0, 0, 0, 3], [4, 0, 0, 8, 0, 3, 0, 0, 1], [7, 0, 0, 0, 2, 0, 0, 0, 6], [0, 6, 0, 0, 0, 0, 2, 8, 0], [0, 0, 0, 4, 1, 9, 0, 0, 5], [0, 0, 0, 0, 8, 0, 0, 7, 9]]
+
+  - shortcut_list = {"Esc":"clear cell", "r": "highlight the row", "c" :"highlight the column", "b" : "highlight the box" }
+
+  table.board
+    thead
+      h1.title Sudoku, by Adrienne Dreyfus
+      .shortcut-section
+        h3.subtitle Keyboard shortcuts
+        ul.shortcuts
+          for shortcut, key in shortcut_list
+            li.shortcut
+              button.key=key
+              span.description=shortcut
+    tbody
+      for row, rowIndex in sudoku_array
+        tr
+        for number, index in row
+          if number
+            td.inactive.cell
+              input(type='text', id=index + 9*rowIndex, placeholder=number, maxlength=1)
+          else
+            td.cell
+              input(type='text', id=index + 9*rowIndex, placeholder="", maxlength=1)
+
+  .check-scores
+    button.submit Check score
+    button.check Check selected cell
+  .clear
+    button.restart Restart game
+    button.clear-highlighting Clear highlighting

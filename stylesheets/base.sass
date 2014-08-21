@@ -5,8 +5,8 @@
 
 $font-face: 'Open Sans', sans-serif
 
-$dark:	#444444
-$blue:	#2DB6CF
+$dark:  #444444
+$blue:  #2DB6CF
 $gold: #FFC033
 $white: #FFFFFF
 $grey: #CCCCCC
@@ -18,129 +18,129 @@ $black: #000000
 
 //Sets a custom background/font color change
 =button-background($colorOnHover, $font-color:$white)
-	background: none repeat scroll 0 0 $dark
-	color: $font-color
-	&:hover 
-		background: none repeat scroll 0 0 $colorOnHover
-		color: $font-color
+  background: none repeat scroll 0 0 $dark
+  color: $font-color
+  &:hover
+    background: none repeat scroll 0 0 $colorOnHover
+    color: $font-color
 
-//Sets a box shadow (used for highlights)		
+//Sets a box shadow (used for highlights)
 =cell-box-shadow($color)
-	box-shadow: 0 0 10px $color
-	
+  box-shadow: 0 0 10px $color
+
 //Sets the placeholder text color
 =placeholder-text-color($color)
-	&::-webkit-input-placeholder
-		color: $color
-	&:-moz-placeholder
-		color: $color
-	&::-moz-placeholder
-		color: $color
-	&:-ms-input-placeholder
-		color: $color
+  &::-webkit-input-placeholder
+    color: $color
+  &:-moz-placeholder
+    color: $color
+  &::-moz-placeholder
+    color: $color
+  &:-ms-input-placeholder
+    color: $color
 
 /** Styles **/
 
 //Main header
 .title
-	color: $dark
-	font-family: $font-face
+  color: $dark
+  font-family: $font-face
 
 //Keyboard shortcuts section
 .shortcut-section
-	padding-left: 5px
-	.shortcuts
-		list-style-type: none
-		padding-left: 0px
-		width: 400px
-		.shortcut				
-			display: inline-block
-			width: 180px
-			.description
-				margin-left: 5px
-				font-family: $font-face
-				font-size: 12px
+  padding-left: 5px
+  .shortcuts
+    list-style-type: none
+    padding-left: 0px
+    width: 400px
+    .shortcut
+      display: inline-block
+      width: 180px
+      .description
+        margin-left: 5px
+        font-family: $font-face
+        font-size: 12px
 
-	.subtitle
-		color: $dark
-		font-size: 14px
-		font-family: $font-face
+  .subtitle
+    color: $dark
+    font-size: 14px
+    font-family: $font-face
 
 //Individual cells
 .cell
-	&.darken
-		background-color: #eee
- 
+  &.darken
+    background-color: #eee
+
 input
-	width: 50px
-	height: 50px
-	text-align: center
-	font-size: 20px
-	padding: 0
-	border: 1px $grey solid
-	background: transparent
-		
-	+placeholder-text-color($black)
-	
-	//Cell highlight styles
-	&:focus
-		outline: none
-		border: 1px solid $blue
-		+cell-box-shadow($blue)
-		
-	&.incorrect
-		border: 1px red solid
-		
-	&.correct
-		border: 1px green solid
-	
-	&.highlight
-		+cell-box-shadow($gold)
-		
-		&:focus
-			border: none
-			+cell-box-shadow($blue)
-			
-//Styles for the default cells 
+  width: 50px
+  height: 50px
+  text-align: center
+  font-size: 20px
+  padding: 0
+  border: 1px $grey solid
+  background: transparent
+
+  +placeholder-text-color($black)
+
+  //Cell highlight styles
+  &:focus
+    outline: none
+    border: 1px solid $blue
+    +cell-box-shadow($blue)
+
+  &.incorrect
+    border: 1px red solid
+
+  &.correct
+    border: 1px green solid
+
+  &.highlight
+    +cell-box-shadow($gold)
+
+    &:focus
+      border: none
+      +cell-box-shadow($blue)
+
+//Styles for the default cells
 .inactive
-	input
-		+placeholder-text-color($dark-grey)
+  input
+    +placeholder-text-color($dark-grey)
 
 //Global button styles
-button 
-	border: 0 none
-	border-radius: 2px 2px 2px 2px
-	color: #FFFFFF
-	cursor: pointer
-	display: inline-block
-	font-family: $font-face
-	font-size: 12px
-	font-weight: bold
-	line-height: 20px
-	margin-bottom: 0
-	margin-right: 2px
-	margin-top: 10px
-	padding: 7px 10px
-	transition: all 0.3s ease 0s
-	-moz-transition: all 0.3s ease 0s
-	-webkit-transition: all 0.3s ease 0s
-	width: 250px
-	text-align: center
-	
-	//Button background styles on hover
-	&:hover 
-		background: none repeat scroll 0 0 $gold
-		color: $white
-	
-	&.restart,
-	&.check 
-		+button-background($blue)
-		 
-	&.submit,
-	&.clear-highlighting
-		+button-background($gold)
-	
-	&.key
-		+button-background($light-grey, $dark-grey)
-		width: 40px
+button
+  border: 0 none
+  border-radius: 2px 2px 2px 2px
+  color: #FFFFFF
+  cursor: pointer
+  display: inline-block
+  font-family: $font-face
+  font-size: 12px
+  font-weight: bold
+  line-height: 20px
+  margin-bottom: 0
+  margin-right: 2px
+  margin-top: 10px
+  padding: 7px 10px
+  transition: all 0.3s ease 0s
+  -moz-transition: all 0.3s ease 0s
+  -webkit-transition: all 0.3s ease 0s
+  width: 250px
+  text-align: center
+
+  //Button background styles on hover
+  &:hover
+    background: none repeat scroll 0 0 $gold
+    color: $white
+
+  &.restart,
+  &.check
+    +button-background($blue)
+
+  &.submit,
+  &.clear-highlighting
+    +button-background($gold)
+
+  &.key
+    +button-background($light-grey, $dark-grey)
+    width: 40px
 
